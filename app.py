@@ -2,6 +2,8 @@
 import os
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
+import script as s
+
 
 UPLOAD_FOLDER = 'local/inputs'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -32,6 +34,9 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #  return redirect(url_for('uploaded_file',
             #                          filename=filename))
+            result = s.run_script(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if result != False:
+                return redirect("http://http://138.197.5.177/" +result , code=302)   
             return '''
                 Hello
             '''
