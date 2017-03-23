@@ -217,7 +217,7 @@ for i, face in enumerate(found_faces, 0):
         img_landmarks = t.get_landmarks(original_face_with_frame)
         similar_landmarks = t.get_landmarks(similar_face_resized)
         
-        path_img_with_landmarks = t.prepend_extension(face["path_local_original_face_with_frame"], '.jpg', '.with_landmarks')
+        path_img_with_landmarks = t.prepend_extension(face["local_original_face_with_frame"], '.jpg', '.with_landmarks')
         t.draw_landmarks_and_save(original_face_with_frame, img_landmarks, path_img_with_landmarks)
         face["local_original_face_with_frame_with_landmarks"] = path_img_with_landmarks
 
