@@ -69,7 +69,7 @@ for i, rect in enumerate(rects, 0):
     path_local_original_face_with_frame = os.path.join(project_path, "original_face_"+str(i)+"_with_frame.jpg") 
     
     rect_no_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_public_original_face_no_frame)
-    rect_with_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_local_original_face_with_frame, margin_factor=0.25)
+    rect_with_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_local_original_face_with_frame, margin_factor=0.35)
     
     temp = {}
     temp["public_original_face_no_frame"] = path_public_original_face_no_frame
@@ -175,7 +175,7 @@ for i, face in enumerate(found_faces, 0):
         #  t.draw_rects_and_save(similar_img_margin, [rect], path_similar_face_margin_with_rects)
 
         path_similar_face_margin_with_frame = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_frame')
-        t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, rect, path_similar_face_margin_with_frame, margin_factor=0.25)
+        t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, rect, path_similar_face_margin_with_frame, margin_factor=0.35)
         face["downloads"].append(path_similar_face_margin_with_frame)
 
         # resize to have the same size as the original face with frame
