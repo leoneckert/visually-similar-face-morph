@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 import script as s
-
+import time
 
 UPLOAD_FOLDER = 'local/inputs'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -41,6 +41,7 @@ def upload_file():
                 #  src2 = "http://138.197.5.177/" +result + "/output2.jpg"
                 #  src3 = "http://138.197.5.177/" +result + "/output3.jpg"
                 call(['ffmpeg', '-framerate', '1', '-i', result + "/output%01d.jpg", result + "/output.mp4"])
+                time.sleep(2)
                 call(['ffmpeg', '-i', result + "/output.mp4", result+"/output.gif"])
                 src = "http://138.197.5.177/" +result + "/output.gif"
                 return render_template('results.html', src1=src)
