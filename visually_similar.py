@@ -14,9 +14,9 @@ detector = dlib.get_frontal_face_detector()
 #url = "http://files.leoneckert.com/original.resized.with_margin.face_no_frame_1.jpg"
 #  url = "http://files.leoneckert.com/original.resized.with_margin.face_no_frame_0.jpg"
 
-def download_file(url, dir_for_tests):
-    local_filename = url.split('/')[-1]
-    local_filename = os.path.join(dir_for_tests, local_filename) 
+def download_file(url, local_filename):
+    #  local_filename = url.split('/')[-1]
+    #  local_filename = os.path.join(dir_for_tests, local_filename)
     # NOTE the stream=True parameter
     r = requests.get(url, stream=True)
     with open(local_filename, 'wb') as f:
