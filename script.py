@@ -134,11 +134,11 @@ for i, face in enumerate(found_faces, 0):
         
         path_similar_face_margin = t.prepend_extension(path_similar_face, '.jpg', '.margin')
         cv2.imwrite(path_similar_face_margin, similar_img_margin)
-        path["downloads"].append(path_similar_face_margin)
+        face["downloads"].append(path_similar_face_margin)
 
         path_similar_face_margin_with_frame = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_frame')
         t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, [rect], path_similar_face_margin_with_frame)
-        path["downloads"].append(path_similar_face_margin_with_frame)
+        face["downloads"].append(path_similar_face_margin_with_frame)
         
         pprint(found_faces)
         sys.exit()
