@@ -33,7 +33,8 @@ def has_face(path):
     if len(rects) > 0: return True
     else: return False
 
-def download_vs_image(input_path, dir_for_tests, outputpath):
+#  def download_vs_image(input_path, dir_for_tests, outputpath):
+def get_vs_links(input_path, dir_for_tests, outputpath):
     
     base_url = 'https://yandex.ru/images/search?rpt=imageview&img_url='
     #  while testing
@@ -64,18 +65,18 @@ def download_vs_image(input_path, dir_for_tests, outputpath):
     print similar_links
     random.shuffle(similar_links)
     print similar_links
-
-    if not os.path.isdir(dir_for_tests):
-        os.makedirs(dir_for_tests)
-    while len(similar_links) > 0:
-        link = similar_links[-1]
-        similar_links = similar_links[:-1]
-        local_filename = download_file(link, dir_for_tests)
-        print local_filename
-        if has_face(local_filename):    
-            shutil.copy(local_filename, outputpath)
-            return True
-            break
-    return False
+    return similar_links
+    #  if not os.path.isdir(dir_for_tests):
+    #      os.makedirs(dir_for_tests)
+    #  while len(similar_links) > 0:
+    #      link = similar_links[-1]
+    #      similar_links = similar_links[:-1]
+    #      local_filename = download_file(link, dir_for_tests)
+    #      print local_filename
+    #      if has_face(local_filename):
+    #          shutil.copy(local_filename, outputpath)
+    #          return True
+    #          break
+    #  return False
 
 #  download_vs_image("dsds/dds/ds/original.resized.with_margin.face_no_frame_0.jpg", "images", "images/face_0_similar_original.jpg")
