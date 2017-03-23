@@ -115,6 +115,17 @@ for i, rect in enumerate(rects, 0):
 #      t.cut_rect_with_margin_and_save_and_return_rect(similar_margin, rect, path_face_with_frame, margin_factor=0.25)
 #
 #      face["similar_with_frame"] = path_face_with_frame
+
+# resize the similar_with_frame to match the size of with_frame
+#  for i, face in enumerate(found_faces, 0):
+#      img = cv2.imread(face["with_frame"])
+#      similar = cv2.imread(face["similar_with_frame"])
+#      similar_resized = t.align_size(img, similar)
+#      path_similar_resized = t.prepend_extension( face["similar_with_frame"], ".jpg", ".resized" )
+#      cv2.imwrite(path_similar_resized, similar_resized)
+#
+#      face["similar_resized"] = path_similar_resized
+
 for i, face in enumerate(found_faces, 0):
     path_public_no_frame = face["public_original_face_no_frame"]
     links = vs.get_vs_links(path_public_no_frame)
@@ -178,10 +189,16 @@ for i, face in enumerate(found_faces, 0):
 
         # check if there the face is still found:
         new_rects = t.get_rects(similar_face_resized)
+
+        # still figuering out if I need one more test here if new rects are found etc.
         print "NEW RECTS"
         print len(new_rects)
         for r in new_rects:
             print r
+        #  [(22, 50) (280, 308)]
+
+
+
         if len(new_rects) == 0:
             print "seems like after resizing, no face was found anymore"
             continue
@@ -195,28 +212,27 @@ for i, face in enumerate(found_faces, 0):
         # also draw with rect:
         path_selected_similar_with_rects = t.prepend_extension(path_selected_similar, ".jpg", ".with_rect")
         t.draw_rects_and_save(similar_face_resized, [new_rects[0]], path_selected_similar_with_rects)
-        face["selected_similar_with_rects"] = path_selected_similar_with_rects
+        face["selected_similar_face_with_rects"] = path_selected_similar_with_rects
 
         img_landmarks = t.get_landmarks(original_face_with_frame)
         similar_landmarks = t.get_landmarks(similar_face_resized)
+        
+        path_img_with_landmarks = t.prepend_extension(face["path_local_original_face_with_frame"], '.jpg', '.with_landmarks')
+        t.draw_landmarks_and_save(original_face_with_frame, img_landmarks, path_img_with_landmarks)
+        face["local_original_face_with_frame_with_landmarks"] = path_img_with_landmarks
 
+        path_selected_similar_with_landmarks = t.prepend_extension(path_selected_similar, '.jpg', 'with_landmarks')
+        t.draw_landmarks_and_save(similar_face_resized, similar_landmarks, path_selected_similar_with_landmarks)
+        face["selected_similar_face_with_landmarks"] = path_selected_similar_with_landmarks
 
         pprint(found_faces)
         sys.exit()
 
+        
 
 
 
 
-# resize the similar_with_frame to match the size of with_frame
-#  for i, face in enumerate(found_faces, 0):
-#      img = cv2.imread(face["with_frame"])
-#      similar = cv2.imread(face["similar_with_frame"])
-#      similar_resized = t.align_size(img, similar)
-#      path_similar_resized = t.prepend_extension( face["similar_with_frame"], ".jpg", ".resized" )
-#      cv2.imwrite(path_similar_resized, similar_resized)
-#
-#      face["similar_resized"] = path_similar_resized
 
 
 # for each face find landmarks, draw them, then save them to a text file
