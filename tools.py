@@ -165,7 +165,7 @@ def morph_triangle(src_img, canvas, src_t, dst_t):
     canvas[ dst_bound[1]:dst_bound[1] + dst_bound[3], dst_bound[0]:dst_bound[0]+dst_bound[2] ] = canvas[ dst_bound[1]:dst_bound[1] + dst_bound[3], dst_bound[0]:dst_bound[0] + dst_bound[2] ] * (1-mask) + warp_src * mask
     
 
-def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img, _big, _bigrect, tri_vis):
+def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img, _big, _bigrect, _big_tri, tri_vis):
     src_img = np.float32(_src_img)
     src_points = process_landmarks_to_tuple_list(src_landmarks) 
     dst_points = process_landmarks_to_tuple_list(dst_landmarks)
@@ -215,7 +215,7 @@ def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img, _big,
     img = _big.copy()
     img = img * (1-mask3) + holder * mask3
    
-    img2 = _big.copy()
+    img2 = _big_tri.copy()
     img2 = img2 * (1-mask3) + holder2 * mask3
 
     #  cv2.imshow('sda', np.uint8(img))

@@ -309,7 +309,7 @@ for i, face in enumerate(found_faces, 0):
     
     r = face["local_original_face_with_frame_rect"]
     
-    new, new2 = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r , cv2.imread(face["original_face_with_triangles_and_landmarks"]) )
+    new, new2 = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r , new2, cv2.imread(face["original_face_with_triangles_and_landmarks"]) )
     
 to_cut_x = int((new.shape[0] - resized.shape[0]) * 0.5)
 to_cut_y = int((new.shape[1] - resized.shape[1]) * 0.5)
