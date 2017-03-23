@@ -37,8 +37,10 @@ def download_vs_image(input_path, dir_for_tests, outputpath):
     
     base_url = 'https://yandex.ru/images/search?rpt=imageview&img_url='
     #  while testing
-    name = input_path.split('/')[-1]
-    url = "http://files.leoneckert.com/" + name
+    name = "/".join(input_path.split('/')[-2:])
+    print "NAME", name
+    url = "http://138.197.5.177/static/images/" + name
+    print "URL", url
 
     url = base_url + url
     html = urllib2.urlopen(url).read()
