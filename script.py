@@ -58,7 +58,8 @@ rects = t.get_rects(margin)
 path_local_original_resized_margin_with_rects = t.prepend_extension(path_local_original_resized_margin, '.jpg', ".with_rects")
 t.draw_rects_and_save(margin, rects, path_local_original_resized_margin_with_rects)
 
-all_paths["local_original_margin_with_rects"] = path_local_original_margin_with_rects
+all_paths["local_original_margin_with_rects"] = path_local_original_resized_margin_with_rects
+
 
 
 pprint(all_paths)
