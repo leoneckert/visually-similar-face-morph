@@ -131,10 +131,15 @@ for i, face in enumerate(found_faces, 0):
         
         #  only track images with a face
         face["downloads"].append(path_similar_face)
-        
+       
+
         path_similar_face_margin = t.prepend_extension(path_similar_face, '.jpg', '.margin')
         cv2.imwrite(path_similar_face_margin, similar_img_margin)
         face["downloads"].append(path_similar_face_margin)
+
+        # quickly draw rect for the record
+        path_similar_face_margin_with_rects = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_rests')
+        t.draw_rects_and_save(similar_img_margin, [rect], path_similar_face_margin_with_rects)
 
         path_similar_face_margin_with_frame = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_frame')
         t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, rect, path_similar_face_margin_with_frame)
