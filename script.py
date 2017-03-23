@@ -273,7 +273,7 @@ for i, face in enumerate(found_faces, 0):
 # create the triangle txt file for the 'destination' faces aka the faces from the original image
 for i, face in enumerate(found_faces, 0):
     img = cv2.imread(face["local_original_face_with_frame"])  
-    landmarks = open(face["local_original_face_with_frame"]).read().splitlines()
+    landmarks = open(face["original_face_landmarks"]).read().splitlines()
     path_img_triangles_txt = t.prepend_extension(face["local_original_face_with_frame"], ".txt", ".triangles")
 
     t.create_and_save_triangle_info(img, landmarks, path_img_triangles_txt)
