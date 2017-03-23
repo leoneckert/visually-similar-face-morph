@@ -25,7 +25,7 @@ all_paths = {}
 
 # copy the input image into the local project folder:
 path_local_original = os.path.join(project_path, "original.jpg")
-shutil.copy(path, path_local_orig)
+shutil.copy(path, path_local_orignal)
 
 all_paths["local_original"] = path_local_original
 
