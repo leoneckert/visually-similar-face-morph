@@ -174,7 +174,29 @@ for i, face in enumerate(found_faces, 0):
         similar_face_resized = t.align_size(original_face_with_frame, similar_face_with_frame)
         path_similar_face_margin_with_frame_resized = t.prepend_extension(path_similar_face_margin_with_frame, '.jpg', '.resized')
         cv2.imwrite(path_similar_face_margin_with_frame_resized, similar_face_resized)
+        face["downloads"].append(path_similar_face_margin_with_frame_resized)
+
+        # check if there the face is still found:
+        new_rects = t.get_rects(similar_face_resized)
+        if len(new_rects) == 0:
+            print "seems like after resizing, no face was found anymore"
+            continue
         
+        # seems like this is the face we are going for
+        path_selected_similar = os.path.join(project_path, "selected_similar_face_resized_"+str(i)+".jpg")
+        cv2.imwrite(path_selected_similar, similar_face_resized)
+        face["selected_similar_face"] = path_selected_similar
+
+
+        # also draw with rect:
+        path_selected_similar_with_rects = t.prepend_extension(path_selected_similar, ".jpg", ".with_rect")
+        t.draw_rects_and_save(similar_face_resized, [new_rects[0]], path_selected_similar_with_rects)
+        face["path_selected_similar_with_rects"] = path_selected_similar_with_rects
+
+        img_landmarks = t.get_landmarks(original_face_with_frame)
+        similar_landmarks = t.get_landmarks(similar_face_resized)
+
+
         pprint(found_faces)
         sys.exit()
 
