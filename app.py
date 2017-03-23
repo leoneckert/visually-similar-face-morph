@@ -45,15 +45,7 @@ def upload_file():
                 call(['ffmpeg', '-i', result + "/output.mp4", result+"/output.gif"])
                 src = "http://138.197.5.177/" +result + "/output.gif"
                 return render_template('results.html', src1=src)
-            return '''
-                <!doctype html>
-                <title>Upload new File</title>
-                <h1>Upload new File</h1>
-                <form method=post enctype=multipart/form-data>
-                  <p><input type=file name=file>
-                     <input type=submit value=Upload>
-                </form>
-            '''
+            return render_template('upload.html')
     return render_template('upload.html')
     #  return '''
     #  <!doctype html>
