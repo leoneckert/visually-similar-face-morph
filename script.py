@@ -297,6 +297,7 @@ for i, face in enumerate(found_faces, 0):
 
 orig = cv2.imread(all_paths["local_original_resized_margin"])
 new = orig.copy()
+new2 = orig.copy()
 
 # morphtime
 for i, face in enumerate(found_faces, 0):
@@ -308,7 +309,7 @@ for i, face in enumerate(found_faces, 0):
     
     r = face["local_original_face_with_frame_rect"]
     
-    new = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r )
+    new2, new = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r , cv2.imread(face["original_face_with_triangles_and_landmarks"]) )
     
 to_cut_x = int((new.shape[0] - resized.shape[0]) * 0.5)
 to_cut_y = int((new.shape[1] - resized.shape[1]) * 0.5)
@@ -316,5 +317,8 @@ new = new[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.s
 
 path_to_output = os.path.join(project_path, "output.jpg")
 cv2.imwrite(path_to_output, new)
+
+path_to_output = os.path.join(project_path, "output2.jpg")
+cv2.imwrite(path_to_output, new2)
 
 pprint(found_faces)
