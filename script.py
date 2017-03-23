@@ -33,7 +33,7 @@ all_paths["local_original"] = path_local_original
 max_width = max_height = 2500
 
 path_local_original_resized = t.prepend_extension(path_local_original, '.jpg', ".resized")
-call(['ffmpeg', '-i', path_orig, '-vf', 'scale=w='+str(max_width)+':h='+str(max_height)+':force_original_aspect_ratio=decrease', path_resized])
+call(['ffmpeg', '-i', path_local_original, '-vf', 'scale=w='+str(max_width)+':h='+str(max_height)+':force_original_aspect_ratio=decrease', path_local_original_resized])
 
 all_paths["local_original_resized"] = path_local_original_resized
 
