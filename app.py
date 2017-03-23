@@ -41,7 +41,7 @@ def upload_file():
                 src2 = "http://138.197.5.177/" +result + "/output2.jpg"
                 src3 = "http://138.197.5.177/" +result + "/output3.jpg"
 
-                return render_template('results.html', srcs=[src1, src2,src3])
+                return render_template('results.html', src1=src1)
             return '''
                 Hello
             '''
