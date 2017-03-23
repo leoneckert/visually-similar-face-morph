@@ -40,6 +40,7 @@ def upload_file():
                 #  src1 = "http://138.197.5.177/" +result + "/output1.jpg"
                 #  src2 = "http://138.197.5.177/" +result + "/output2.jpg"
                 #  src3 = "http://138.197.5.177/" +result + "/output3.jpg"
+                time.sleep(2)
                 call(['ffmpeg', '-framerate', '1', '-i', result + "/output%01d.jpg", result + "/output.mp4"])
                 time.sleep(2)
                 call(['ffmpeg', '-i', result + "/output.mp4", result+"/output.gif"])
