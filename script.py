@@ -126,6 +126,29 @@ for i, rect in enumerate(rects, 0):
 #
 #      face["similar_resized"] = path_similar_resized
 
+# for each face find landmarks, draw them, then save them to a text file
+#  for i, face in enumerate(found_faces, 0):
+#      img = cv2.imread(face["with_frame"])
+#      similar = cv2.imread(face["similar_resized"])
+#
+#      img_landmarks = t.get_landmarks(img)
+#      similar_landmarks = t.get_landmarks(similar)
+#
+#      path_img_landmarks = t.prepend_extension(face["with_frame"], ".jpg", ".with_landmarks")
+#      t.draw_landmarks_and_save(img, img_landmarks, path_img_landmarks)
+#      path_similar_landmarks = t.prepend_extension(face["similar_resized"], ".jpg", ".with_landmarks")
+#      t.draw_landmarks_and_save(similar, similar_landmarks, path_similar_landmarks)
+#
+#      path_img_landmarks_txt = t.prepend_extension(face["with_frame"], ".txt", ".landmarks")
+#      path_similar_landmarks_txt = t.prepend_extension(face["similar_resized"], ".txt", ".landmarks")
+#
+#      t.save_landmarks_to_text(img_landmarks, path_img_landmarks_txt)
+#      t.save_landmarks_to_text(similar_landmarks, path_similar_landmarks_txt)
+#
+#      face["similar_landmarks"] = path_similar_landmarks_txt
+#      face["landmarks"] = path_img_landmarks_txt
+
+
 for i, face in enumerate(found_faces, 0):
     path_public_no_frame = face["public_original_face_no_frame"]
     links = vs.get_vs_links(path_public_no_frame)
@@ -150,7 +173,7 @@ for i, face in enumerate(found_faces, 0):
         pick = links[-1]
         links = links[:-1]
         
-        path_similar_face = os.path.join(path_local_similar_testground, "similar_"+str(test_count)+".jpg")
+        path_similar_face = os.path.join(path_local_similar_testground, "face_"+str(i)+"_similar_"+str(test_count)+".jpg")
         vs.download_file(pick, path_similar_face)
         
         similar_img = cv2.imread(path_similar_face)
@@ -221,12 +244,14 @@ for i, face in enumerate(found_faces, 0):
         t.draw_landmarks_and_save(original_face_with_frame, img_landmarks, path_img_with_landmarks)
         face["local_original_face_with_frame_with_landmarks"] = path_img_with_landmarks
 
-        path_selected_similar_with_landmarks = t.prepend_extension(path_selected_similar, '.jpg', 'with_landmarks')
+        path_selected_similar_with_landmarks = t.prepend_extension(path_selected_similar, '.jpg', '.with_landmarks')
         t.draw_landmarks_and_save(similar_face_resized, similar_landmarks, path_selected_similar_with_landmarks)
         face["selected_similar_face_with_landmarks"] = path_selected_similar_with_landmarks
 
         path_img_landmarks_text = t.prepend_extension(face["local_original_face_with_frame"], '.txt', '.landmarks')
         path_similar_landmarks_text = t.prepend_extension(path_selected_similar, '.txt', '.landmarks')
+        face["original_face_landmarks"] = path_img_landmarks_text
+        face["selected_similar_face_landmarks"] = path_similar_landmarks_text
 
         t.save_landmarks_to_text(img_landmarks, path_img_landmarks_text)
         t.save_landmarks_to_text(similar_landmarks, path_similar_landmarks_text)
@@ -234,8 +259,9 @@ for i, face in enumerate(found_faces, 0):
 
         print "dont with this while loop, on to the next"
         break
-pprint(found_faces)
-sys.exit()
+
+
+
 
         
 
@@ -244,44 +270,23 @@ sys.exit()
 
 
 
-# for each face find landmarks, draw them, then save them to a text file
-#  for i, face in enumerate(found_faces, 0):
-#      img = cv2.imread(face["with_frame"])
-#      similar = cv2.imread(face["similar_resized"])
-#
-#      img_landmarks = t.get_landmarks(img)
-#      similar_landmarks = t.get_landmarks(similar)
-#
-#      path_img_landmarks = t.prepend_extension(face["with_frame"], ".jpg", ".with_landmarks")
-#      t.draw_landmarks_and_save(img, img_landmarks, path_img_landmarks)
-#      path_similar_landmarks = t.prepend_extension(face["similar_resized"], ".jpg", ".with_landmarks")
-#      t.draw_landmarks_and_save(similar, similar_landmarks, path_similar_landmarks)
-#
-#      path_img_landmarks_txt = t.prepend_extension(face["with_frame"], ".txt", ".landmarks")
-#      path_similar_landmarks_txt = t.prepend_extension(face["similar_resized"], ".txt", ".landmarks")
-#
-#      t.save_landmarks_to_text(img_landmarks, path_img_landmarks_txt)
-#      t.save_landmarks_to_text(similar_landmarks, path_similar_landmarks_txt)
-#
-#      face["similar_landmarks"] = path_similar_landmarks_txt
-#      face["landmarks"] = path_img_landmarks_txt
-
-
 # create the triangle txt file for the 'destination' faces aka the faces from the original image
 for i, face in enumerate(found_faces, 0):
-    img = cv2.imread(face["with_frame"])  
-    landmarks = open(face["landmarks"]).read().splitlines()
-    path_img_triangles_txt = t.prepend_extension(face["with_frame"], ".txt", ".triangles")
+    img = cv2.imread(face["local_original_face_with_frame"])  
+    landmarks = open(face["local_original_face_with_frame"]).read().splitlines()
+    path_img_triangles_txt = t.prepend_extension(face["local_original_face_with_frame"], ".txt", ".triangles")
 
     t.create_and_save_triangle_info(img, landmarks, path_img_triangles_txt)
 
     triangles = open(path_img_triangles_txt).read().splitlines()
-    path_img_triangles_and_landmarks = t.prepend_extension(face["with_frame"], ".jpg", ".triangles_and_landmarks")
+    path_img_triangles_and_landmarks = t.prepend_extension(face["local_original_face_with_frame"], ".jpg", ".triangles_and_landmarks")
     t.draw_triangles_and_landmarks_and_save(img, landmarks, triangles, path_img_triangles_and_landmarks)
 
-    face["triangles"] = path_img_triangles_txt
+    face["original_face_triangles"] = path_img_triangles_txt
 
 
+pprint(found_faces)
+sys.exit()
 
 orig = cv2.imread(path_margin)
 new = orig.copy()
