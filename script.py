@@ -290,7 +290,7 @@ for i, face in enumerate(found_faces, 0):
     original_face_with_landmarks = cv2.imread(path_img_triangles_and_landmarks)
     original_with_margin_and_landmarks[rectangle["x"]:rectangle["x"] + rectangle["w"], rectangle["y"]:rectangle["y"]+rectangle["h"]] = original_face_with_landmarks
     path_original_margin_with_landmarks_in_one_face = t.prepend_extension(path_img_triangles_and_landmarks, '.jpg', '.on_original')
-    cv2.imwrite(original_with_margin_and_landmarks, path_original_margin_with_landmarks_in_one_face)
+    cv2.imwrite(path_original_margin_with_landmarks_in_one_face, original_with_margin_and_landmarks)
 
 pprint(found_faces)
 sys.exit()
