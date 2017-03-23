@@ -32,7 +32,7 @@ all_paths["local_original"] = path_local_original
 # resize image to uniform size 
 max_width = max_height = 2500
 
-path_local_original_resized = t.prepend_extension(path_orig, '.jpg', ".resized")
+path_local_original_resized = t.prepend_extension(path_local_original, '.jpg', ".resized")
 call(['ffmpeg', '-i', path_orig, '-vf', 'scale=w='+str(max_width)+':h='+str(max_height)+':force_original_aspect_ratio=decrease', path_resized])
 
 all_paths["local_original_resized"] = path_local_original_resized
@@ -40,7 +40,7 @@ all_paths["local_original_resized"] = path_local_original_resized
 # add margin in case faces are on the edge of the images
 resized = cv2.imread(path_local_original_resized)
 margin = t.add_margin_to_image(resized, factor=0.5)
-path_local_original_resized_margin = t.prepend_extension(path_resized, ".jpg", ".with_margin")
+path_local_original_resized_margin = t.prepend_extension(path_local_original_resized, ".jpg", ".with_margin")
 cv2.imwrite(path_local_original_resized_margin, margin)
 
 all_paths["local_original_resized_margin"] = path_local_original_resized_margin
@@ -55,7 +55,7 @@ if not(t.has_faces(margin)):
 rects = t.get_rects(margin)
 
 # draw rectangles onto face on 
-path_local_original_resized_margin_with_rects = t.prepend_extension(path_margin, '.jpg', ".with_rects")
+path_local_original_resized_margin_with_rects = t.prepend_extension(path_local_original_resized_margin, '.jpg', ".with_rects")
 t.draw_rects_and_save(margin, rects, path_local_original_resized_margin_with_rects)
 
 all_paths["local_original_margin_with_rects"] = path_local_original_margin_with_rects
