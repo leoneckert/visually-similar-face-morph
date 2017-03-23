@@ -34,9 +34,9 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #  return redirect(url_for('uploaded_file',
             #                          filename=filename))
-            s.run_script(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            #  if result != False:
-            #      return redirect("http://http://138.197.5.177/" +result , code=302)
+            result = s.run_script(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if result != False:
+                return redirect("http://http://138.197.5.177/" +result , code=302)
             return '''
                 Hello
             '''
