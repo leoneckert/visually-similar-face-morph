@@ -93,6 +93,28 @@ for i, rect in enumerate(rects, 0):
 #          print "didnt find simliar for", rect_no_frame
 #          sys.exit()
 
+# save the similar images with margin
+#  for i, face in enumerate(found_faces, 0):
+#      path_similar = face["similar_original"]
+#      similar = cv2.imread(path_similar)
+#      similar_margin = t.add_margin_to_image(similar, factor=0.5)
+#      path_similar_margin = t.prepend_extension(path_similar, ".jpg", ".with_margin")
+#      cv2.imwrite(path_similar_margin, similar_margin)
+#      face["similar_with_margin"] = path_similar_margin
+
+# for each similar images, detect the first best face, draw it, cut with frame and save it.
+#  for i, face in enumerate(found_faces, 0):
+#      path_similar_margin = face["similar_with_margin"]
+#      similar_margin = cv2.imread(path_similar_margin)
+#      rect = t.get_rects(similar_margin)[0]
+#
+#      path_similar_margin_with_rects = t.prepend_extension(path_similar_margin, '.jpg', ".with_rects")
+#      t.draw_rects_and_save(similar_margin, [rect], path_similar_margin_with_rects)
+#
+#      path_face_with_frame = t.prepend_extension(path_similar_margin, ".jpg", ".face_with_frame_" + str(i))
+#      t.cut_rect_with_margin_and_save_and_return_rect(similar_margin, rect, path_face_with_frame, margin_factor=0.25)
+#
+#      face["similar_with_frame"] = path_face_with_frame
 for i, face in enumerate(found_faces, 0):
     path_public_no_frame = face["public_original_face_no_frame"]
     links = vs.get_vs_links(path_public_no_frame)
@@ -137,41 +159,27 @@ for i, face in enumerate(found_faces, 0):
         cv2.imwrite(path_similar_face_margin, similar_img_margin)
         face["downloads"].append(path_similar_face_margin)
 
-        # quickly draw rect for the record
-        path_similar_face_margin_with_rects = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_rests')
-        t.draw_rects_and_save(similar_img_margin, [rect], path_similar_face_margin_with_rects)
+        #  quickly draw rect for the record. ACTUALLY LETS DO THIS AFTER RESIZING
+        #  path_similar_face_margin_with_rects = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_rests')
+        #  t.draw_rects_and_save(similar_img_margin, [rect], path_similar_face_margin_with_rects)
 
         path_similar_face_margin_with_frame = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_frame')
         t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, rect, path_similar_face_margin_with_frame)
         face["downloads"].append(path_similar_face_margin_with_frame)
+
+        # resize to have the same size as the original face with frame
+        similar_face_with_frame = cv2.imread(path_similar_face_margin_with_frame)
+        original_face_with_frame = cv2.imread(face["local_original_face_with_frame"])
+        
+        similar_face_resized = t.align_size(original_face_with_frame, similar_face_with_frame)
+        path_similar_face_margin_with_frame_resized = t.prepend_extension(path_similar_face_margin_with_frame, '.jpg', '.resized')
+        cv2.imwrite(path_similar_face_margin_with_frame_resized, similar_face_resized)
         
         pprint(found_faces)
         sys.exit()
 
 
 
-# save the similar images with margin
-#  for i, face in enumerate(found_faces, 0):
-#      path_similar = face["similar_original"]
-#      similar = cv2.imread(path_similar)
-#      similar_margin = t.add_margin_to_image(similar, factor=0.5)
-#      path_similar_margin = t.prepend_extension(path_similar, ".jpg", ".with_margin")
-#      cv2.imwrite(path_similar_margin, similar_margin)
-#      face["similar_with_margin"] = path_similar_margin
-
-# for each similar images, detect the first best face, draw it, cut with frame and save it.
-#  for i, face in enumerate(found_faces, 0):
-#      path_similar_margin = face["similar_with_margin"]
-#      similar_margin = cv2.imread(path_similar_margin)
-#      rect = t.get_rects(similar_margin)[0]
-#
-#      path_similar_margin_with_rects = t.prepend_extension(path_similar_margin, '.jpg', ".with_rects")
-#      t.draw_rects_and_save(similar_margin, [rect], path_similar_margin_with_rects)
-#
-#      path_face_with_frame = t.prepend_extension(path_similar_margin, ".jpg", ".face_with_frame_" + str(i))
-#      t.cut_rect_with_margin_and_save_and_return_rect(similar_margin, rect, path_face_with_frame, margin_factor=0.25)
-#
-#      face["similar_with_frame"] = path_face_with_frame
 
 
 # resize the similar_with_frame to match the size of with_frame
