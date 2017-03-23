@@ -42,7 +42,7 @@ def upload_file():
                 #  src3 = "http://138.197.5.177/" +result + "/output3.jpg"
                 print "SLEEPING NOW"
                 time.sleep(10)
-                call(['ffmpeg', '-framerate', '1', '-i', result + "/output%01d.jpg", '-vf', '"scale=trunc(iw/2)*2:trunc(ih/2)*2"', result + "/output.mp4"])
+                call(['ffmpeg', '-framerate', '1', '-i', result + "/output%01d.jpg", '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2', result + "/output.mp4"])
                 time.sleep(2)
                 call(['ffmpeg', '-i', result + "/output.mp4", result+"/output.gif"])
                 src = "http://138.197.5.177/" +result + "/output.gif"
