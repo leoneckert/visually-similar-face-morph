@@ -292,21 +292,21 @@ for i, face in enumerate(found_faces, 0):
     path_original_margin_with_landmarks_in_one_face = t.prepend_extension(path_img_triangles_and_landmarks, '.jpg', '.on_original')
     cv2.imwrite(path_original_margin_with_landmarks_in_one_face, original_with_margin_and_landmarks)
 
-pprint(found_faces)
-sys.exit()
+    face["original_face_with_triangles_on_full_image"] = path_original_margin_with_landmarks_in_one_face
+
 
 orig = cv2.imread(all_paths["local_original_resized_margin"])
 new = orig.copy()
 
 # morphtime
 for i, face in enumerate(found_faces, 0):
-    img = cv2.imread(face["with_frame"])  
-    similar = cv2.imread(face["similar_resized"])
-    similar_landmarks = open(face["similar_landmarks"]).read().splitlines()
-    img_landmarks = open(face["landmarks"]).read().splitlines()
-    triangles = open(face["triangles"]).read().splitlines()
+    img = cv2.imread(face["local_original_face_with_frame"])  
+    similar = cv2.imread(face["selected_similar_face"])
+    similar_landmarks = open(face["selected_similar_face_landmarks"]).read().splitlines()
+    img_landmarks = open(face["original_face_landmarks"]).read().splitlines()
+    triangles = open(face["original_face_triangles"]).read().splitlines()
     
-    r = face["rect_with_frame"]
+    r = face["local_original_face_with_frame_rect"]
     
     new = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r )
     
@@ -317,4 +317,4 @@ new = new[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.s
 path_to_output = os.path.join(project_path, "output.jpg")
 cv2.imwrite(path_to_output, new)
 
-
+pprint(found_faces)
