@@ -225,6 +225,12 @@ for i, face in enumerate(found_faces, 0):
         t.draw_landmarks_and_save(similar_face_resized, similar_landmarks, path_selected_similar_with_landmarks)
         face["selected_similar_face_with_landmarks"] = path_selected_similar_with_landmarks
 
+        path_img_landmarks_text = t.prepend_extension(face["local_original_face_with_frame"], '.txt', '.landmarks')
+        path_similar_landmarks_text = t.prepend_extension(path_selected_similar, '.txt', '.landmarks')
+
+        t.save_landmarks_to_text(img_landmarks, path_img_landmarks_text)
+        t.save_landmarks_to_text(similar_landmarks, path_similar_landmarks_text)
+
         pprint(found_faces)
         sys.exit()
 
