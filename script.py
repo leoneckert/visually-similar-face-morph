@@ -79,10 +79,6 @@ for i, rect in enumerate(rects, 0):
     #  found_faces.append( {"rect_no_frame": rect_no_frame, "rect_with_frame": rect_with_frame, "no_frame": path_face_no_frame, "with_frame": path_face_with_frame} )
     found_faces.append( temp )
 
-pprint(all_paths)
-pprint(found_faces)
-sys.exit()
-
 
 # now find visually similar faces with the no_frame images and save them;
 #  for i, face in enumerate(found_faces, 0):
@@ -98,9 +94,25 @@ sys.exit()
 #          sys.exit()
 
 for i, face in enumerate(found_faces, 0):
-    path_no_frame = face["no_frame"]
-    links = vs.get_vs_links(path_no_frame)
+    path_public_no_frame = face["public_original_face_no_frame"]
+    links = vs.get_vs_links(path_public_no_frame)
+    print "GOT THESE LINKS:", links
+    face["local_simnilar_links"] = links
+    if len(links) == 0:
+        print "NO links, continuing in case there are more faces"
+        continue
 
+    test_count = 0
+    first_pick = links[-1]
+    links = links[:-1]
+    path_local_similar_testground = os.path.join(project_path, "similar_downloads")
+    path_similar_face = os.path.join(path_local_similar_testground, "similar_"+str(test_count)+".jpg")
+    vs.download_file(first_pick, path_similar_face)
+    face["downloads"] = list()
+    face["downloads"].append(path_similar_face)
+
+    pprint(found_faces)
+    sys.exit()
 # save the similar images with margin
 #  for i, face in enumerate(found_faces, 0):
 #      path_similar = face["similar_original"]
