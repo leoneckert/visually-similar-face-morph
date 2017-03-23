@@ -34,10 +34,9 @@ def has_face(path):
     else: return False
 
 #  def download_vs_image(input_path, dir_for_tests, outputpath):
-def get_vs_links(input_path, dir_for_tests, outputpath):
+def get_vs_links(input_path):
     
     base_url = 'https://yandex.ru/images/search?rpt=imageview&img_url='
-    #  while testing
     name = "/".join(input_path.split('/')[-2:])
     print "NAME", name
     url = "http://138.197.5.177/static/images/" + name
@@ -62,7 +61,6 @@ def get_vs_links(input_path, dir_for_tests, outputpath):
             print "this is an error, why?"
             print img
             pass
-    print similar_links
     random.shuffle(similar_links)
     print similar_links
     return similar_links
