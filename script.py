@@ -340,7 +340,7 @@ def run_script(path):
 
 if __name__ == "__main__":
     path = sys.argv[1]
-    output = run_script(path):
+    output = run_script(path)
     print "DONE and putput =", output
 
 
