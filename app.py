@@ -6,7 +6,7 @@ import script as s
 
 
 UPLOAD_FOLDER = 'local/inputs'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.debug = True
@@ -43,7 +43,13 @@ def upload_file():
 
                 return render_template('results.html', src1=src1)
             return '''
-                Hello
+                <!doctype html>
+                <title>Upload new File</title>
+                <h1>Upload new File</h1>
+                <form method=post enctype=multipart/form-data>
+                  <p><input type=file name=file>
+                     <input type=submit value=Upload>
+                </form>
             '''
     return '''
     <!doctype html>

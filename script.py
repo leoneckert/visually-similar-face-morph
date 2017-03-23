@@ -332,7 +332,10 @@ def run_script(path):
     cv2.imwrite(path_to_output, clean)
     path_to_output = os.path.join(public_project_path, "output3.jpg")
     cv2.imwrite(path_to_output, clean)
-
+    
+    path_to_output = os.path.join(public_project_path, "output.gif")
+    imageio.mimsave(path_to_output, [ clean, with_triangles, new_faces  ])
+    
     #  pprint(found_faces)
     return public_project_path
 
