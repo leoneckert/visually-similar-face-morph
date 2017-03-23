@@ -178,6 +178,8 @@ for i, face in enumerate(found_faces, 0):
 
         # check if there the face is still found:
         new_rects = t.get_rects(similar_face_resized)
+        print "NEW RECTS"
+        print new_rects
         if len(new_rects) == 0:
             print "seems like after resizing, no face was found anymore"
             continue
@@ -191,7 +193,7 @@ for i, face in enumerate(found_faces, 0):
         # also draw with rect:
         path_selected_similar_with_rects = t.prepend_extension(path_selected_similar, ".jpg", ".with_rect")
         t.draw_rects_and_save(similar_face_resized, [new_rects[0]], path_selected_similar_with_rects)
-        face["path_selected_similar_with_rects"] = path_selected_similar_with_rects
+        face["selected_similar_with_rects"] = path_selected_similar_with_rects
 
         img_landmarks = t.get_landmarks(original_face_with_frame)
         similar_landmarks = t.get_landmarks(similar_face_resized)
