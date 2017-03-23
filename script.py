@@ -179,7 +179,9 @@ for i, face in enumerate(found_faces, 0):
         # check if there the face is still found:
         new_rects = t.get_rects(similar_face_resized)
         print "NEW RECTS"
-        print new_rects
+        print len(new_rects)
+        for r in new_rects:
+            print r
         if len(new_rects) == 0:
             print "seems like after resizing, no face was found anymore"
             continue
