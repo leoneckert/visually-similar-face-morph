@@ -313,12 +313,18 @@ for i, face in enumerate(found_faces, 0):
     
 to_cut_x = int((new.shape[0] - resized.shape[0]) * 0.5)
 to_cut_y = int((new.shape[1] - resized.shape[1]) * 0.5)
-new = new[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
+new_faces = new[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
+with_triangles = new2[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
+clean = orig[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
+
 
 path_to_output = os.path.join(project_path, "output.jpg")
-cv2.imwrite(path_to_output, new)
+cv2.imwrite(path_to_output, new_faces)
 
 path_to_output = os.path.join(project_path, "output2.jpg")
-cv2.imwrite(path_to_output, new2)
+cv2.imwrite(path_to_output, with_triangles)
+
+path_to_output = os.path.join(project_path, "output3.jpg")
+cv2.imwrite(path_to_output, clean)
 
 pprint(found_faces)
