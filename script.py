@@ -269,7 +269,7 @@ def run_script(path):
 
     # create the triangle txt file for the 'destination' faces aka the faces from the original image
     for i, face in enumerate(found_faces, 0):
-        if len([face["local_similar_links"]) == 0: continue
+        if len(face["local_similar_links"]) == 0: continue
         img = cv2.imread(face["local_original_face_with_frame"])  
         landmarks = open(face["original_face_landmarks"]).read().splitlines()
         path_img_triangles_txt = t.prepend_extension(face["local_original_face_with_frame"], ".txt", ".triangles")
@@ -299,7 +299,7 @@ def run_script(path):
 
     # morphtime
     for i, face in enumerate(found_faces, 0):
-        if len([face["local_similar_links"]) == 0: continue
+        if len(face["local_similar_links"]) == 0: continue
 
         img = cv2.imread(face["local_original_face_with_frame"])  
         similar = cv2.imread(face["selected_similar_face"])
