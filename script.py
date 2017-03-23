@@ -106,6 +106,9 @@ for i, face in enumerate(found_faces, 0):
     first_pick = links[-1]
     links = links[:-1]
     path_local_similar_testground = os.path.join(project_path, "similar_downloads")
+
+    if not os.path.isdir(path_local_similar_testground):
+        os.makedirs(path_local_similar_testground)
     path_similar_face = os.path.join(path_local_similar_testground, "similar_"+str(test_count)+".jpg")
     vs.download_file(first_pick, path_similar_face)
     face["downloads"] = list()
