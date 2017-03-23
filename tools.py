@@ -216,7 +216,7 @@ def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img, _big,
     img = img * (1-mask3) + holder * mask3
    
     img2 = _big_tri.copy()
-    img2 = img2 * (1-mask3) + holder2 * mask3
+    #  img2 = img2 * (1-mask3) + holder2 * mask3
 
     #  cv2.imshow('sda', np.uint8(img))
     #  cv2.waitKey(0)
