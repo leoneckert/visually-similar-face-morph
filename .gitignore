@@ -1,6 +1,7 @@
 shape_predictor_68_face_landmarks.dat
 images
 __*
+!__init__.py
 
 # Created by https://www.gitignore.io/api/osx,python,virtualenv,opencv
 

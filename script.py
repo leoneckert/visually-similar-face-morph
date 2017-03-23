@@ -1,31 +1,34 @@
 import cv2
 import numpy as np
 import tools as t
-import sys, os, time
+import sys, os, time, shutil
 from pprint import pprint
 from subprocess import call
+import visually_similar as vs
+path = sys.argv[1]
 
-#  path = sys.argv[1]
-
-#  path = "images/uploaded.jpg"
 # get uplaoded folder and move it into timestamped directory
-#  ts = int(time.time())
-ts = 1489816549
+ts = int(time.time())
+#  ts = 1489816549
 project_path = os.path.join("images", str(ts))
 if not os.path.isdir(project_path):
     os.makedirs(project_path)
 path_orig = os.path.join(project_path, "original.jpg")
-#  os.rename(path, path_orig)
+shutil.copy(path, path_orig)
+#  while testing illl copy the "simliar images" as well
+#  shutil.copy(sys.argv[2], os.path.join(project_path, "face_0_similar_original.jpg") )
+#  shutil.copy(sys.argv[3], os.path.join(project_path, "face_1_similar_original.jpg") )
+
 
 #  -----
 #  project_path = os.path.join("images", str(1489786129))
 #  path_orig = os.path.join(project_path, "original.jpg")
 
 # size image down
-max_width = max_height = 1000
+max_width = max_height = 2500
 path_resized = t.prepend_extension(path_orig, '.jpg', ".resized")
 call(['ffmpeg', '-i', path_orig, '-vf', 'scale=w='+str(max_width)+':h='+str(max_height)+':force_original_aspect_ratio=decrease', path_resized])
-#  call(['cp', path_orig, path_resized])
+call(['cp', path_orig, path_resized])
 
 # add margin
 resized = cv2.imread(path_resized)
@@ -57,9 +60,16 @@ for i, rect in enumerate(rects, 0):
 
 # now find visually similar faces with the no_frame images and save them;
 for i, face in enumerate(found_faces, 0):
-    path = os.path.join(project_path, "face_"+str(i)+"_similar_original.jpg")
-    # find similar_images check for face in there, and save
-    face["similar_original"] = path
+    path_for_similar = os.path.join(project_path, "face_"+str(i)+"_similar_original.jpg")
+    path_for_downloads = os.path.join(project_path, "face_"+str(i)+"_similar_downloads")
+    rect_no_frame = face["no_frame"]
+    print rect_no_frame, "<<<"
+    if vs.download_vs_image(rect_no_frame, path_for_downloads, path_for_similar):
+        face["similar_original"] = path_for_similar
+    else:
+
+        print "didnt find simliar for", rect_no_frame
+        sys.exit()
 
 # save the similar images with margin
 for i, face in enumerate(found_faces, 0):
@@ -136,8 +146,6 @@ for i, face in enumerate(found_faces, 0):
 
 
 orig = cv2.imread(path_margin)
-cv2.imshow('sdfsd', orig)
-cv2.waitKey(0)
 new = orig.copy()
 
 # morphtime
@@ -147,11 +155,16 @@ for i, face in enumerate(found_faces, 0):
     similar_landmarks = open(face["similar_landmarks"]).read().splitlines()
     img_landmarks = open(face["landmarks"]).read().splitlines()
     triangles = open(face["triangles"]).read().splitlines()
-    morphed = t.morph(similar, similar_landmarks, img_landmarks, triangles, img)
     
     r = face["rect_with_frame"]
-    new[r["y"]:r["y"] + r["h"], r["x"]:r["x"]+r["w"] ] = morphed
+    
+    new = t.morph(similar, similar_landmarks, img_landmarks, triangles, img, new, r )
+    
+to_cut_x = int((new.shape[0] - resized.shape[0]) * 0.5)
+to_cut_y = int((new.shape[1] - resized.shape[1]) * 0.5)
+new = new[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
 
-cv2.imshow('sdfsd', new)
-cv2.waitKey(0)
+path_to_output = os.path.join(project_path, "output.jpg")
+cv2.imwrite(path_to_output, new)
+
 

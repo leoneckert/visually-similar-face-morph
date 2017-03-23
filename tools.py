@@ -18,6 +18,7 @@ def add_margin_to_image(img, factor=1):
     canvas[leftright_margin:leftright_margin+w, topbottom_margin:topbottom_margin+h] = img
     return canvas
 
+
 def has_faces(img):
     rects = detector(img)
     if len(rects) > 0: return True
@@ -159,21 +160,35 @@ def morph_triangle(src_img, canvas, src_t, dst_t):
     canvas[ dst_bound[1]:dst_bound[1] + dst_bound[3], dst_bound[0]:dst_bound[0]+dst_bound[2] ] = canvas[ dst_bound[1]:dst_bound[1] + dst_bound[3], dst_bound[0]:dst_bound[0] + dst_bound[2] ] * (1-mask) + warp_src * mask
     
 
-def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img):
+def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img, _big, _bigrect):
     src_img = np.float32(_src_img)
     src_points = process_landmarks_to_tuple_list(src_landmarks) 
     dst_points = process_landmarks_to_tuple_list(dst_landmarks)
     
     canvas = np.zeros( _dst_img.shape, dtype = _dst_img.dtype )
     #  anvas = src_img.copy()
-    mask2 = np.zeros( ( _dst_img.shape[0], _dst_img.shape[1], 3 ), dtype = np.float32 )
+    #  mask2 = np.zeros( ( _dst_img.shape[0], _dst_img.shape[1], 3 ), dtype = np.float32 )
+    mask3 = np.zeros( ( _big.shape[0], _big.shape[1], 3), dtype = np.float32 )
+    #  cv2.imshow("big", _big)
+    #  cv2.waitKey(0)
     for line in dst_triangles:
         x,y,z = line.split()
         x = int(x)
         y = int(y)
         z = int(z)
         
-        cv2.fillConvexPoly(mask2, np.int32([ dst_points[x], dst_points[y], dst_points[z] ]), (1.0,1.0,1.0), 16, 0 )
+        offset_x = ( dst_points[x][0] + _bigrect["x"], dst_points[x][1] + _bigrect["y"]   )
+        offset_y = ( dst_points[y][0] + _bigrect["x"], dst_points[y][1] + _bigrect["y"]   )
+        offset_z = ( dst_points[z][0] + _bigrect["x"], dst_points[z][1] + _bigrect["y"]   )
+
+        cv2.fillConvexPoly(mask3, np.int32([ offset_x, offset_y, offset_z ]), (1.0,1.0,1.0), 16, 0 )
+        #  print x, dst_points[x], ( dst_points[x][0] + _bigrect["x"], dst_points[x][1] + _bigrect["y"]   )
+
+        #  cv2.fillConvexPoly(mask2, np.int32([ dst_points[x], dst_points[y], dst_points[z] ]), (1.0,1.0,1.0), 16, 0 )
+        #  cv2.imshow("big", mask3)
+        #  cv2.imshow("ds", mask2)
+        #
+        #  cv2.waitKey(0)
 
         src_t = [ src_points[x], src_points[y], src_points[z] ]
         dst_t = [ dst_points[x], dst_points[y], dst_points[z] ]
@@ -182,9 +197,21 @@ def morph(_src_img, src_landmarks, dst_landmarks, dst_triangles, _dst_img):
 
         #  cv2.imshow("ds", np.uint8(canvas))
         #  cv2.waitKey(0)
-    img = _dst_img.copy()
-    img = img * (1-mask2) + canvas * mask2
+    holder = _big.copy()
+    #  cv2.imshow("holder", holder)
+    #  cv2.waitKey(0)
+    holder[ _bigrect["y"]:_bigrect["y"] + _bigrect["h"], _bigrect["x"]:_bigrect["x"] + _bigrect["w"]   ] = canvas
+    #  cv2.imshow("holder", holder)
+    #  cv2.waitKey(0)
+        
+    img = _big.copy()
+    img = img * (1-mask3) + holder * mask3
+
+
     #  cv2.imshow('sda', np.uint8(img))
     #  cv2.waitKey(0)
+
+    #  img = _dst_img.copy()
+    #  img = img * (1-mask2) + canvas * mask2
     return np.uint8(img)
     
