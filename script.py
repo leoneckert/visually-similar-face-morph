@@ -154,7 +154,7 @@ def run_script(path):
         path_public_no_frame = face["public_original_face_no_frame"]
         links = vs.get_vs_links(path_public_no_frame)
         print "GOT THESE LINKS:", links
-        face["local_simnilar_links"] = links
+        face["local_similar_links"] = links
         if len(links) == 0:
             print "NO links, continuing in case there are more faces"
             continue
@@ -261,12 +261,7 @@ def run_script(path):
 
             print "dont with this while loop, on to the next"
             break
-
-
-
-
-            
-
+        
 
 
 
@@ -274,6 +269,7 @@ def run_script(path):
 
     # create the triangle txt file for the 'destination' faces aka the faces from the original image
     for i, face in enumerate(found_faces, 0):
+        if len([face["local_similar_links"]) == 0: continue
         img = cv2.imread(face["local_original_face_with_frame"])  
         landmarks = open(face["original_face_landmarks"]).read().splitlines()
         path_img_triangles_txt = t.prepend_extension(face["local_original_face_with_frame"], ".txt", ".triangles")
@@ -303,6 +299,8 @@ def run_script(path):
 
     # morphtime
     for i, face in enumerate(found_faces, 0):
+        if len([face["local_similar_links"]) == 0: continue
+
         img = cv2.imread(face["local_original_face_with_frame"])  
         similar = cv2.imread(face["selected_similar_face"])
         similar_landmarks = open(face["selected_similar_face_landmarks"]).read().splitlines()
