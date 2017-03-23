@@ -277,18 +277,25 @@ for i, face in enumerate(found_faces, 0):
     path_img_triangles_txt = t.prepend_extension(face["local_original_face_with_frame"], ".txt", ".triangles")
 
     t.create_and_save_triangle_info(img, landmarks, path_img_triangles_txt)
+    face["original_face_triangles"] = path_img_triangles_txt
 
     triangles = open(path_img_triangles_txt).read().splitlines()
     path_img_triangles_and_landmarks = t.prepend_extension(face["local_original_face_with_frame"], ".jpg", ".triangles_and_landmarks")
     t.draw_triangles_and_landmarks_and_save(img, landmarks, triangles, path_img_triangles_and_landmarks)
 
-    face["original_face_triangles"] = path_img_triangles_txt
-
+    face["original_face_with_triangles_and_landmarks"] = path_img_triangles_and_landmarks
+    
+    original_with_margin_and_landmarks = cv2.imread(all_paths["local_original_resized_margin"])    
+    rectangle = face["local_original_face_with_frame_rect"]
+    original_face_with_landmarks = cv2.imread(path_img_triangles_and_landmarks)
+    original_with_margin_and_landmarks[rectangle["x"]:rectangle["x"] + rectangle["w"], rectangle["y"]:rectangle["y"]+rectangle["h"]] = original_face_with_landmarks
+    path_original_margin_with_landmarks_in_one_face = t.prepend_extension(path_img_triangles_and_landmarks, '.jpg', '.on_original')
+    cv2.imwrite(original_with_margin_and_landmarks, path_original_margin_with_landmarks_in_one_face)
 
 pprint(found_faces)
 sys.exit()
 
-orig = cv2.imread(path_margin)
+orig = cv2.imread(all_paths["local_original_resized_margin"])
 new = orig.copy()
 
 # morphtime
