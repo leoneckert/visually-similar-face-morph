@@ -57,3 +57,7 @@ app.add_url_rule('/uploads/<filename>', 'uploaded_file',
 app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
     '/uploads':  app.config['UPLOAD_FOLDER']
     })
+
+if __name__ == "__main__":
+    app.run()
+
