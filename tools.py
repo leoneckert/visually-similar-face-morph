@@ -108,9 +108,14 @@ def draw_triangles_and_landmarks_and_save(_img, landmarks, triangles, out_path):
         pt2 = ( int(points_dict[int(pt2)][0]), int( points_dict[int(pt2)][1] ) )
         pt3 = ( int(points_dict[int(pt3)][0]), int( points_dict[int(pt3)][1] ) )
 
-        cv2.line(img, pt1, pt2, (255,255,255), 1, cv2.CV_AA, 0)
-        cv2.line(img, pt2, pt3, (255,255,255), 1, cv2.CV_AA, 0)
-        cv2.line(img, pt3, pt1, (255,255,255), 1, cv2.CV_AA, 0)
+        try:
+            cv2.line(img, pt1, pt2, (255,255,255), 1, cv2.CV_AA, 0)
+            cv2.line(img, pt2, pt3, (255,255,255), 1, cv2.CV_AA, 0)
+            cv2.line(img, pt3, pt1, (255,255,255), 1, cv2.CV_AA, 0)
+        except:
+            cv2.line(img, pt1, pt2, (255,255,255), 1, cv2.CV_AA, 0)
+            cv2.line(img, pt2, pt3, (255,255,255), 1, cv2.CV_AA, 0)
+            cv2.line(img, pt3, pt1, (255,255,255), 1, cv2.CV_AA, 0)
 
     for point in landmarks:
         x, y = point.split()

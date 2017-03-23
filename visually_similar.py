@@ -5,6 +5,7 @@ import random
 import os, shutil
 import cv2
 import dlib
+import tools as t
 
 detector = dlib.get_frontal_face_detector()
 #  base_url = 'https://yandex.ru/images/search?rpt=imageview&img_url='
@@ -27,7 +28,8 @@ def download_file(url, dir_for_tests):
 
 def has_face(path):
     img = cv2.imread(path)
-    rects = detector(img)
+    img_with_margin = t.add_margin_to_image(img, factor = 0.5)
+    rects = t.get_rects(img_with_margin)
     if len(rects) > 0: return True
     else: return False
 

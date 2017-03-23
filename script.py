@@ -10,7 +10,7 @@ path = sys.argv[1]
 # get uplaoded folder and move it into timestamped directory
 ts = int(time.time())
 #  ts = 1489816549
-project_path = os.path.join("images", str(ts))
+project_path = os.path.join("static/images", str(ts))
 if not os.path.isdir(project_path):
     os.makedirs(project_path)
 path_orig = os.path.join(project_path, "original.jpg")
