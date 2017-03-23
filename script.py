@@ -230,9 +230,12 @@ for i, face in enumerate(found_faces, 0):
 
         t.save_landmarks_to_text(img_landmarks, path_img_landmarks_text)
         t.save_landmarks_to_text(similar_landmarks, path_similar_landmarks_text)
+        
 
-        pprint(found_faces)
-        sys.exit()
+        print "dont with this while loop, on to the next"
+        break
+pprint(found_faces)
+sys.exit()
 
         
 
