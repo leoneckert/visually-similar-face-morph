@@ -102,20 +102,49 @@ for i, face in enumerate(found_faces, 0):
         print "NO links, continuing in case there are more faces"
         continue
 
-    test_count = 0
-    first_pick = links[-1]
-    links = links[:-1]
     path_local_similar_testground = os.path.join(project_path, "similar_downloads")
-
     if not os.path.isdir(path_local_similar_testground):
         os.makedirs(path_local_similar_testground)
-    path_similar_face = os.path.join(path_local_similar_testground, "similar_"+str(test_count)+".jpg")
-    vs.download_file(first_pick, path_similar_face)
-    face["downloads"] = list()
-    face["downloads"].append(path_similar_face)
 
-    pprint(found_faces)
-    sys.exit()
+
+    test_count = -1
+    face["downloads"] = list()
+    while True:
+        test_count += 1
+        if len(links) == 0:
+            print "tried all links, nothing found"
+            sys.exit()
+        pick = links[-1]
+        links = links[:-1]
+        
+        path_similar_face = os.path.join(path_local_similar_testground, "similar_"+str(test_count)+".jpg")
+        vs.download_file(pick, path_similar_face)
+        
+        similar_img = cv2.imread(path_similar_face)
+        similar_img_margin = t.add_margin_to_image(similar_img, factor=0.5)
+        
+        rects = t.get_rects(similar_img_margin)
+        if len(rects) == 0:
+            print "no faces found in this similar image, on to the next"
+            continue
+        rect = rects[0]
+        
+        #  only track images with a face
+        face["downloads"].append(path_similar_face)
+        
+        path_similar_face_margin = t.prepend_extension(path_similar_face, '.jpg', '.margin')
+        cv2.imwrite(path_similar_face_margin, similar_img_margin)
+        path["downloads"].append(path_similar_face_margin)
+
+        path_similar_face_margin_with_frame = t.prepend_extension(path_similar_face_margin, '.jpg', '.with_frame')
+        t.cut_rect_with_margin_and_save_and_return_rect(similar_img_margin, [rect], path_similar_face_margin_with_frame)
+        path["downloads"].append(path_similar_face_margin_with_frame)
+        
+        pprint(found_faces)
+        sys.exit()
+
+
+
 # save the similar images with margin
 #  for i, face in enumerate(found_faces, 0):
 #      path_similar = face["similar_original"]
