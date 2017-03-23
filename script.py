@@ -61,19 +61,27 @@ t.draw_rects_and_save(margin, rects, path_local_original_resized_margin_with_rec
 all_paths["local_original_margin_with_rects"] = path_local_original_resized_margin_with_rects
 
 
-
-pprint(all_paths)
-sys.exit()
-
 found_faces = list()
 for i, rect in enumerate(rects, 0):
-    path_face_no_frame = t.prepend_extension(path_margin, ".jpg", ".face_no_frame_" + str(i))
-    path_face_with_frame = t.prepend_extension(path_margin, ".jpg", ".face_with_frame_" + str(i))
+    #  path_public_original_face_no_frame = t.prepend_extension(path_margin, ".jpg", ".face_no_frame_" + str(i))
+    #  path_local_original_face_with_frame = t.prepend_extension(path_margin, ".jpg", ".face_with_frame_" + str(i))
+    path_public_original_face_no_frame = os.path.join(public_project_path, "original_face_"+str(i)+"_no_frame.jpg")
+    path_local_original_face_with_frame = os.path.join(project_path, "original_face_"+str(i)+"_with_frame.jpg") 
     
-    rect_no_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_face_no_frame)
-    rect_with_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_face_with_frame, margin_factor=0.25)
+    rect_no_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_public_original_face_no_frame)
+    rect_with_frame = t.cut_rect_with_margin_and_save_and_return_rect(margin, rect, path_local_original_face_with_frame, margin_factor=0.25)
+    
+    temp = {}
+    temp["public_original_face_no_frame"] = path_public_original_face_no_frame
+    temp["public_original_face_no_frame_rect"] = rect_no_frame
+    temp["local_original_face_with_frame"] = path_local_original_face_with_frame
+    temp["local_original_face_with_frame_rect"] = rect_with_frame
+    #  found_faces.append( {"rect_no_frame": rect_no_frame, "rect_with_frame": rect_with_frame, "no_frame": path_face_no_frame, "with_frame": path_face_with_frame} )
+    found_faces.append( temp )
 
-    found_faces.append( {"rect_no_frame": rect_no_frame, "rect_with_frame": rect_with_frame, "no_frame": path_face_no_frame, "with_frame": path_face_with_frame} ) 
+pprint(all_paths)
+pprint(found_faces)
+sys.exit()
 
 
 # now find visually similar faces with the no_frame images and save them;
