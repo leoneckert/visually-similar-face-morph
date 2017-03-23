@@ -288,7 +288,7 @@ for i, face in enumerate(found_faces, 0):
     original_with_margin_and_landmarks = cv2.imread(all_paths["local_original_resized_margin"])    
     rectangle = face["local_original_face_with_frame_rect"]
     original_face_with_landmarks = cv2.imread(path_img_triangles_and_landmarks)
-    original_with_margin_and_landmarks[rectangle["x"]:rectangle["x"] + rectangle["w"], rectangle["y"]:rectangle["y"]+rectangle["h"]] = original_face_with_landmarks
+    original_with_margin_and_landmarks[rectangle["y"]:rectangle["y"]+rectangle["h"], rectangle["x"]:rectangle["x"] + rectangle["w"]] = original_face_with_landmarks
     path_original_margin_with_landmarks_in_one_face = t.prepend_extension(path_img_triangles_and_landmarks, '.jpg', '.on_original')
     cv2.imwrite(path_original_margin_with_landmarks_in_one_face, original_with_margin_and_landmarks)
 
