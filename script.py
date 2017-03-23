@@ -318,9 +318,9 @@ def run_script(path):
     clean = orig[ to_cut_x:to_cut_x + resized.shape[0] , to_cut_y: to_cut_y + resized.shape[1] ]
 
 
-    path_to_output = os.path.join(project_path, "output1.jpg")
+    path_to_output = os.path.join(project_path, "output3.jpg")
     cv2.imwrite(path_to_output, new_faces)
-    path_to_output = os.path.join(public_project_path, "output1.jpg")
+    path_to_output = os.path.join(public_project_path, "output3.jpg")
     cv2.imwrite(path_to_output, new_faces)
 
     path_to_output = os.path.join(project_path, "output2.jpg")
@@ -328,9 +328,9 @@ def run_script(path):
     path_to_output = os.path.join(public_project_path, "output2.jpg")
     cv2.imwrite(path_to_output, with_triangles)
 
-    path_to_output = os.path.join(project_path, "output3.jpg")
+    path_to_output = os.path.join(project_path, "output1.jpg")
     cv2.imwrite(path_to_output, clean)
-    path_to_output = os.path.join(public_project_path, "output3.jpg")
+    path_to_output = os.path.join(public_project_path, "output1.jpg")
     cv2.imwrite(path_to_output, clean)
     
     import imageio

@@ -1,4 +1,4 @@
-
+from subprocess import call
 import os
 from flask import Flask, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
@@ -37,10 +37,12 @@ def upload_file():
             result = s.run_script(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if result != False:
                 #  return redirect("http://http://138.197.5.177/" +result , code=302)
-                src1 = "http://138.197.5.177/" +result + "/output1.jpg"
-                src2 = "http://138.197.5.177/" +result + "/output2.jpg"
-                src3 = "http://138.197.5.177/" +result + "/output3.jpg"
-
+                #  src1 = "http://138.197.5.177/" +result + "/output1.jpg"
+                #  src2 = "http://138.197.5.177/" +result + "/output2.jpg"
+                #  src3 = "http://138.197.5.177/" +result + "/output3.jpg"
+                call(['ffmpeg', '-framerate', '1', '-i', result + "/output%01d.jpg", result + "/output.mp4"])
+                call(['ffmpeg', '-i', result + "/output.mp4", result+"/output.gif"])
+                src = "http://138.197.5.177/" +result + "/output.gif"
                 return render_template('results.html', src1=src1)
             return '''
                 <!doctype html>
