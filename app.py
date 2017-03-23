@@ -36,7 +36,12 @@ def upload_file():
             #                          filename=filename))
             result = s.run_script(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if result != False:
-                return redirect("http://http://138.197.5.177/" +result , code=302)
+                #  return redirect("http://http://138.197.5.177/" +result , code=302)
+                src1 = "http://138.197.5.177/" +result + "/output1.jpg"
+                src2 = "http://138.197.5.177/" +result + "/output2.jpg"
+                src3 = "http://138.197.5.177/" +result + "/output3.jpg"
+
+                return render_template('results.html', srcs=[src1, src2,src3])
             return '''
                 Hello
             '''
